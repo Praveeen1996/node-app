@@ -3,6 +3,10 @@ pipeline {
   tools {
   nodejs 'NodeJS-20.4.0'
 }
+    environment {
+      DOCKER_TAG = getVersion()
+    }
+
     stages {
         stage('CLEAN WORKSPACE') {
             steps {
@@ -20,5 +24,14 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('DOCKER BUILD'){
+            steps{
+                sh "docker build . -t praveenhema/nodeapp:${DOCKER_TAG} "
+            }
+        }
     }
+}
+def getVersion(){
+    def commitHash = sh label: '', returnStdout: true, script: 'git rev-parse --short HEAD'
+    return commitHash
 }
