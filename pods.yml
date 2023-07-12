@@ -10,9 +10,11 @@ spec:
       image: kammana/nodeapp:v1
       ports:
         - containerPort: 8080
-        ---  
+
         
-        kind: Service
+  ---  
+        
+kind: Service
 apiVersion: v1
 metadata:
   name: nodeapp
