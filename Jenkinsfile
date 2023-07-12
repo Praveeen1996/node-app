@@ -38,22 +38,7 @@ pipeline {
                 sh "docker push praveenhema/nodeapp:${DOCKER_TAG} "
             }
         }
-        stage('Deploy To K8S'){
-            steps{
-                sh "chmod +x changeTag.sh"
-                sh "./changeTag.sh ${DOCKER_TAG}"
-                sshagent(['kubernetes']) {
-                    sh "scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ubuntu@13.233.31.170:/home/ubuntu/"
-                    script{
-                        try{
-                            sh "ssh ubuntu@13.233.31.170 kubectl apply -f ."
-                        }catch(error){
-                            sh "ssh ubuntu@13.233.31.170 kubectl create -f ."
-                        }
-                    }
-}
-            }
-        } 
+        
     }
 }
 def getVersion(){
